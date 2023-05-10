@@ -7,15 +7,20 @@ import TripEvent from '../view/trip-event-view.js';
 class TripPresenter {
   tripListComponent = new TripEventsListView();
 
+  constructor(tripPointsModel) {
+    this.tripPointsModel = tripPointsModel;
+  }
+
   init(container) {
+    this.tripPoints = [...this.tripPointsModel.getTripPoints()];
     this.container = container;
 
     render(new TripEventsSortingView(), this.container);
     render(this.tripListComponent, this.container);
-    this.tripListComponent.addComponent(new TripEventsFormView());
+    this.tripListComponent.addComponent(new TripEventsFormView({tripPoint: this.tripPoints[0]}));
 
-    for (let i = 0; i < 3; i++) {
-      this.tripListComponent.addComponent(new TripEvent());
+    for (let i = 0; i < this.tripPoints.length; i++) {
+      this.tripListComponent.addComponent(new TripEvent({tripPoint: this.tripPoints[i]}));
     }
   }
 }
