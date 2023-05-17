@@ -9,15 +9,13 @@ import {getRandomOffers} from '../mock/offer.js';
 import {randomDesinations} from '../mock/destination';
 
 
-const createOffersTemplate = (offers) => {
-  return offers.map((offer) => `
+const createOffersTemplate = (offers) => offers.map((offer) => `
     <li class="event__offer">
       <span class="event__offer-title">${offer.title}</span>
       &plus;&euro;&nbsp;
       <span class="event__offer-price">${offer.price}</span>
     </li>
   `).join('');
-};
 
 const createTripEventTemplate = (eventPoint) => {
   const {destination, offers, type} = eventPoint;
@@ -67,7 +65,7 @@ class TripEventView extends BaseView {
     this.tripPoint = tripPoint;
   }
 
-  getTemplate() {
+  get template() {
     return createTripEventTemplate(this.tripPoint);
   }
 }

@@ -180,7 +180,7 @@ class TripEventsFormView extends BaseView {
     this.tripPoint = tripPoint;
   }
 
-  getTemplate() {
+  get template() {
     return createTripEventsFormTemplate(this.tripPoint);
   }
 }

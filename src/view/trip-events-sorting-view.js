@@ -30,7 +30,7 @@ const createTripEventsSortingTemplate = () => `
 `;
 
 class TripEventsSortingView extends BaseView {
-  getTemplate() {
+  get template() {
     return createTripEventsSortingTemplate();
   }
 }

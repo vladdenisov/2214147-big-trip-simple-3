@@ -15,7 +15,7 @@ const createFilterTemplate = () =>
 
 
 class FiltersView extends BaseView {
-  getTemplate() {
+  get template() {
     return createFilterTemplate();
   }
 }
