@@ -67,7 +67,7 @@ class TripEventView extends BaseView {
     this.tripPoint = tripPoint;
   }
 
-  getTemplate() {
+  get template() {
     return createTripEventTemplate(this.tripPoint);
   }
 }
