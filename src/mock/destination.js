@@ -29,4 +29,4 @@ export const randomDesinations = (() => {
     getDestination: (id) => destinations[id],
     getAllDestinations: () => destinations,
   };
-})();
+})(); // Замыкания для хранения одинаковых точек, а не создания каждый раз новых. Чтобы по одинаковому id до обновления страницы получать одинаковые данные.
