@@ -60,6 +60,21 @@ export default class AbstractView {
       callback?.();
     }, SHAKE_ANIMATION_TIMEOUT);
   }
+  /**
+   * @param {string} selector
+   * @param {string} event
+   * @param {(event) => void} callback
+   */
+
+  addEventListener(selector, event, callback) {
+    if (!this._callback[event]) {
+      this._callback[event] = {};
+    }
+
+    this._callback[event][selector] = callback;
+
+    this.element.querySelector(selector).addEventListener(event, this._callback[event][selector]);
+  }
 }
 
 /**

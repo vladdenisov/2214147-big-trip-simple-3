@@ -1,6 +1,6 @@
-import BaseView from './base-view.js';
 import {randomDesinations} from '../mock/destination';
 import {convertToFormDate, convertToTime} from '../utils/converters';
+import AbstractView from '../framework/view/abstract-view';
 
 const createPhotosTemplate = (photos) => photos.map((photo) => `<img class="event__photo" src="${photo.src}" alt="${photo.description}">`).join('');
 
@@ -174,7 +174,7 @@ const createTripEventsFormTemplate = (eventPoint = {}) => {
 `;
 };
 
-class TripEventsFormView extends BaseView {
+class TripEventsFormView extends AbstractView {
   constructor({tripPoint}) {
     super();
     this.tripPoint = tripPoint;
