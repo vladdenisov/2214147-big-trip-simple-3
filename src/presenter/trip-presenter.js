@@ -1,11 +1,9 @@
-import {render, replace} from '../framework/render.js';
+import {render} from '../framework/render.js';
 import TripEventsListView from '../view/trip-events-list-view.js';
 import TripEventsSortingView from '../view/trip-events-sorting-view.js';
-import TripEventsFormView from '../view/trip-events-form-view.js';
-import TripEvent from '../view/trip-event-view.js';
 import NoPointsView from '../view/no-trip-events-view';
-import {generateFilter} from '../mock/filters';
 import {generateSorts} from '../mock/sort';
+import {TripPointPresenter} from './tripPoint-presenter';
 
 class TripPresenter {
   #tripContainer = null;
@@ -14,6 +12,7 @@ class TripPresenter {
 
   #tripPoints = [];
   #sorts = generateSorts();
+  #tripPointPresenter = new Map();
 
   constructor(container, tripPointsModel) {
     this.#tripContainer = container;
@@ -21,55 +20,29 @@ class TripPresenter {
     this.#tripPoints = [...this.#tripPointsModel.getTripPoints()];
   }
 
+  #handleModeChange = () => {
+    this.#tripPointPresenter.forEach((presenter) => presenter.resetView());
+  };
 
   #renderTripPoint = (tripPoint) => {
+    const container = this.#tripEventsListComponent.element;
+    const tripPointPresenter = new TripPointPresenter(container, tripPoint, {handleModeChange: this.#handleModeChange});
+    tripPointPresenter.init();
+    this.#tripPointPresenter.set(tripPoint.id, tripPointPresenter);
+  };
 
-    const tripPointFormComponent = new TripEventsFormView({
-      tripPoint
-    });
+  #renderSortingView = () => {
+    render(new TripEventsSortingView({sorts: this.#sorts}), this.#tripContainer);
+  };
 
-    const tripPointComponent = new TripEvent({
-      tripPoint
-    });
-
-    const replacePointToForm = () => {
-      replace(tripPointFormComponent, tripPointComponent);
-    };
-
-    const replaceFormToPoint = () => {
-      replace(tripPointComponent, tripPointFormComponent);
-    };
-
-    const closeEditFormOnEcsapeKey = (event) => {
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        replacePointToForm();
-        document.body.removeEventListener('keydown', closeEditFormOnEcsapeKey);
-      }
-    };
-
-    tripPointComponent.addEventListener('.event__rollup-btn', 'click', () => {
-      replacePointToForm();
-      document.body.addEventListener('keydown', closeEditFormOnEcsapeKey);
-    });
-
-    tripPointFormComponent.addEventListener('.event__save-btn', 'click', (evt) => {
-      evt.preventDefault();
-      replaceFormToPoint();
-      document.body.removeEventListener('keydown', closeEditFormOnEcsapeKey);
-    });
-
-    tripPointFormComponent.addEventListener('.event__reset-btn','click', () => {
-      replaceFormToPoint();
-      document.body.removeEventListener('keydown', closeEditFormOnEcsapeKey);
-    });
-
-    render(tripPointComponent, this.#tripEventsListComponent.element);
+  #renderEventsList = () => {
+    render(this.#tripEventsListComponent, this.#tripContainer);
   };
 
   init() {
-    render(new TripEventsSortingView({sorts: this.#sorts}), this.#tripContainer);
-    render(this.#tripEventsListComponent, this.#tripContainer);
+    this.#renderSortingView();
+    this.#renderEventsList();
+
     if (this.#tripPoints.length === 0) {
       render(new NoPointsView(), this.#tripContainer);
     }

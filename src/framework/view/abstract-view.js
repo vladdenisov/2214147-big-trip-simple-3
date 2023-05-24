@@ -67,13 +67,19 @@ export default class AbstractView {
    */
 
   addEventListener(selector, event, callback) {
+    const selectedNode = this.element.querySelector(selector);
+
+    if (!selectedNode) {
+      throw new Error('No such element');
+    }
+
     if (!this._callback[event]) {
       this._callback[event] = {};
     }
 
     this._callback[event][selector] = callback;
 
-    this.element.querySelector(selector).addEventListener(event, this._callback[event][selector]);
+    selectedNode.addEventListener(event, this._callback[event][selector]);
   }
 
   /**
