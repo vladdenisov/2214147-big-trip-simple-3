@@ -4,6 +4,7 @@ import TripEventsSortingView from '../view/trip-events-sorting-view.js';
 import TripEventsFormView from '../view/trip-events-form-view.js';
 import TripEvent from '../view/trip-event-view.js';
 import NoPointsView from '../view/no-trip-events-view';
+import {generateFilter} from '../mock/filters';
 
 class TripPresenter {
   #tripContainer = null;
@@ -11,6 +12,7 @@ class TripPresenter {
   #tripEventsListComponent = new TripEventsListView();
 
   #tripPoints = [];
+  #filters = generateFilter();
 
   constructor(container, tripPointsModel) {
     this.#tripContainer = container;

@@ -1,5 +1,5 @@
 import {randomDesinations} from '../mock/destination';
-import {convertToFormDate, convertToTime} from '../utils/converters';
+import {convertToFormDate, convertToTime} from '../utils/date';
 import AbstractView from '../framework/view/abstract-view';
 
 const createPhotosTemplate = (photos) => photos.map((photo) => `<img class="event__photo" src="${photo.src}" alt="${photo.description}">`).join('');
