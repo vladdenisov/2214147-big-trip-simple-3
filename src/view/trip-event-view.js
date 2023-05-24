@@ -3,7 +3,7 @@ import {
   convertToEventDate,
   convertToEventDateTime,
   convertToTime
-} from '../utils/converters';
+} from '../utils/date';
 import {getRandomOffers} from '../mock/offer.js';
 import {randomDesinations} from '../mock/destination';
 import AbstractView from '../framework/view/abstract-view';
