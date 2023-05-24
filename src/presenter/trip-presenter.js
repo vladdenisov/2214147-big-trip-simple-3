@@ -28,12 +28,13 @@ class TripPresenter {
     const tripPointComponent = new TripEvent({
       tripPoint
     });
+
     const replacePointToForm = () => {
-      this.#tripEventsListComponent.element.replaceChild(tripPointFormComponent.element, tripPointComponent.element);
+      replace(tripPointFormComponent, tripPointComponent);
     };
 
     const replaceFormToPoint = () => {
-      this.#tripEventsListComponent.element.replaceChild(tripPointComponent.element, tripPointFormComponent.element);
+      replace(tripPointComponent, tripPointFormComponent);
     };
 
     const closeEditFormOnEcsapeKey = (event) => {
