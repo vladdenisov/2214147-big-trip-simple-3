@@ -60,42 +60,6 @@ export default class AbstractView {
       callback?.();
     }, SHAKE_ANIMATION_TIMEOUT);
   }
-  /**
-   * @param {string} selector
-   * @param {string} event
-   * @param {(event: Event) => void} callback
-   */
-
-  addEventListener(selector, event, callback) {
-    const selectedNode = this.element.querySelector(selector);
-
-    if (!selectedNode) {
-      throw new Error('No such element');
-    }
-
-    if (!this._callback[event]) {
-      this._callback[event] = {};
-    }
-
-    this._callback[event][selector] = callback;
-
-    selectedNode.addEventListener(event, this._callback[event][selector]);
-  }
-
-  /**
-   * @param {string} selector
-   * @param {string} event
-   */
-
-  removeEventListener(selector, event) {
-    if (!this._callback[event] && !this._callback[event][selector]) {
-      return;
-    }
-
-    this.element.querySelector(selector).removeEventListener(event, this._callback[event][selector]);
-
-    this._callback[event][selector] = null;
-  }
 }
 
 /**
