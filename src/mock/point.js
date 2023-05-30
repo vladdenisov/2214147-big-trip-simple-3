@@ -10,7 +10,7 @@ export const generateTripPoint = () => ({
   'date_from': getRandomDate(),
   'date_to': getRandomDate(),
   'destination': generateRandomInt(0, 9),
-  'id': generateRandomInt(0, 3),
+  'id': generateRandomInt(0, 100),
   'offers': [1, 3, 5],
   'type': getRandomType()
 });

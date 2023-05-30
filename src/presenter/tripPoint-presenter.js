@@ -28,8 +28,7 @@ export class TripPointPresenter {
   #closeEditFormOnEcsapeKey(event) {
     if (event.key === 'Escape') {
       event.preventDefault();
-      this.#replacePointToForm();
-      document.body.removeEventListener('keydown', this.#closeEditFormOnEcsapeKey);
+      this.#replaceFormToPoint();
     }
   }
 
@@ -61,18 +60,15 @@ export class TripPointPresenter {
 
     this.#tripPointComponent.addEventListener('.event__rollup-btn', 'click', () => {
       this.#replacePointToForm();
-      document.body.addEventListener('keydown', this.#closeEditFormOnEcsapeKey);
     });
 
     this.#tripPointFormComponent.addEventListener('.event__save-btn', 'click', (evt) => {
       evt.preventDefault();
       this.#replaceFormToPoint();
-      document.body.removeEventListener('keydown', this.#closeEditFormOnEcsapeKey);
     });
 
     this.#tripPointFormComponent.addEventListener('.event__reset-btn','click', () => {
       this.#replaceFormToPoint();
-      document.body.removeEventListener('keydown', this.#closeEditFormOnEcsapeKey);
     });
 
     if (prevTripPointComponent === null || prevTripPointFormComponent === null) {
