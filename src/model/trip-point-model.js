@@ -1,11 +1,23 @@
-import { generateTripPoint } from '../mock/point';
-
-const POINT_COUNT = 3;
-
 export default class TripPointModel {
-  tripPoints = Array.from({length: POINT_COUNT}, generateTripPoint);
+  #tripPoints = null;
+  #destinations = null;
+  #offers = null;
 
-  getTripPoints() {
-    return this.tripPoints;
+  constructor (tripPoints, destinations, offers) {
+    this.#tripPoints = tripPoints;
+    this.#destinations = destinations;
+    this.#offers = offers;
+  }
+
+  get tripPoints() {
+    return this.#tripPoints;
+  }
+
+  get destinations() {
+    return this.#destinations;
+  }
+
+  get offers() {
+    return this.#offers;
   }
 }

@@ -60,10 +60,18 @@ const createTripEventTemplate = (eventPoint) => {
 
 
 class TripEventView extends AbstractView {
-  constructor({tripPoint}) {
+  constructor({tripPoint, onRollupClick}) {
     super();
     this.tripPoint = tripPoint;
+    this._callback.onRollupClick = onRollupClick;
+
+    this.element.querySelector('.event__rollup-btn',).addEventListener('click', this.#rollupHandler);
   }
+
+  #rollupHandler = (event) => {
+    event.preventDefault();
+    this._callback.onRollupClick();
+  };
 
   get template() {
     return createTripEventTemplate(this.tripPoint);

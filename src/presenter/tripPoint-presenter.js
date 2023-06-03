@@ -51,25 +51,22 @@ export class TripPointPresenter {
     const prevTripPointFormComponent = this.#tripPointFormComponent;
 
     this.#tripPointFormComponent = new TripEventsFormView({
-      tripPoint: this.#tripPoint
+      tripPoint: this.#tripPoint,
+      onSave: () => {
+        this.#replaceFormToPoint();
+      },
+      onReset: () => {
+        this.#replaceFormToPoint();
+      }
     });
 
     this.#tripPointComponent = new TripEvent({
-      tripPoint: this.#tripPoint
+      tripPoint: this.#tripPoint,
+      onRollupClick: () => {
+        this.#replacePointToForm();
+      }
     });
 
-    this.#tripPointComponent.addEventListener('.event__rollup-btn', 'click', () => {
-      this.#replacePointToForm();
-    });
-
-    this.#tripPointFormComponent.addEventListener('.event__save-btn', 'click', (evt) => {
-      evt.preventDefault();
-      this.#replaceFormToPoint();
-    });
-
-    this.#tripPointFormComponent.addEventListener('.event__reset-btn','click', () => {
-      this.#replaceFormToPoint();
-    });
 
     if (prevTripPointComponent === null || prevTripPointFormComponent === null) {
       render(this.#tripPointComponent, this.#container);

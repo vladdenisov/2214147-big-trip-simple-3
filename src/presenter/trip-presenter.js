@@ -19,12 +19,10 @@ class TripPresenter {
 
   #currentSortType = SortType.DAY;
 
-
   constructor(container, tripPointsModel) {
     this.#tripContainer = container;
     this.#tripPointsModel = tripPointsModel;
-    this.#tripPoints = [...this.#tripPointsModel.getTripPoints()];
-
+    this.#tripPoints = [...tripPointsModel.tripPoints];
   }
 
   #handleModeChange = () => {
@@ -36,7 +34,6 @@ class TripPresenter {
     const tripPointPresenter = new TripPointPresenter(container, tripPoint, {handleModeChange: this.#handleModeChange});
     tripPointPresenter.init();
     this.#tripPointPresenter.set(tripPoint.id, tripPointPresenter);
-    console.log(tripPoint.id, tripPointPresenter)
   };
 
   #handleSortTypeChange = (sortType) => {
@@ -63,7 +60,6 @@ class TripPresenter {
   };
 
   #clearEventsList = () => {
-    console.log(this.#tripPointPresenter)
     this.#tripPointPresenter.forEach((presenter) => presenter.destroy());
     this.#tripPointPresenter.clear();
   };
