@@ -1,41 +1,41 @@
 import { UpdateType } from '../utils/const';
 import Observable from '../framework/observable';
 export default class TripEventModel extends Observable {
-  #tripPoints = [];
-  #tripPointApiService = null;
+  #tripEvents = [];
+  #tripEventApiService = null;
 
   constructor ({tripPointApiService}) {
     super();
-    this.#tripPointApiService = tripPointApiService;
+    this.#tripEventApiService = tripPointApiService;
   }
 
   init = async () => {
     try {
-      const tripPoints = await this.#tripPointApiService.tripPoints;
-      this.#tripPoints = tripPoints.map(this.#adaptToClient);
+      const tripEvents = await this.#tripEventApiService.tripEvents;
+      this.#tripEvents = tripEvents.map(this.#adaptToClient);
     } catch(error) {
-      this.#tripPoints = [];
+      this.#tripEvents = [];
     }
     this._notify(UpdateType.INIT);
   };
 
   updateTripPoint = async (updateType, update) => {
-    const index = this.#tripPoints.findIndex((tripPoint) => tripPoint.id === update.id);
+    const index = this.#tripEvents.findIndex((event) => event.id === update.id);
 
     if (index === -1) {
       throw new Error('Can\'t update unexisting tripPoint');
     }
 
     try {
-      const response = await this.#tripPointApiService.updateTripPoint(update);
-      const updatedTripPoint = this.#adaptToClient(response);
-      this.#tripPoints = [
-        ...this.tripPoints.slice(0, index),
-        updatedTripPoint,
-        ...this.#tripPoints.slice(index + 1),
+      const response = await this.#tripEventApiService.updateTripEvent(update);
+      const updatedTripEvents = this.#adaptToClient(response);
+      this.#tripEvents = [
+        ...this.tripEvents.slice(0, index),
+        updatedTripEvents,
+        ...this.#tripEvents.slice(index + 1),
       ];
 
-      this._notify(updateType, updatedTripPoint);
+      this._notify(updateType, updatedTripEvents);
     } catch(err) {
       throw new Error('Can\'t update tripPoint');
     }
@@ -43,9 +43,9 @@ export default class TripEventModel extends Observable {
 
   addTripPoint = async (updateType, update) => {
     try {
-      const response = await this.#tripPointApiService.addTripPoint(update);
+      const response = await this.#tripEventApiService.addTripEvent(update);
       const newTripPoint = this.#adaptToClient(response);
-      this.#tripPoints = [newTripPoint, ...this.#tripPoints];
+      this.#tripEvents = [newTripPoint, ...this.#tripEvents];
       this._notify(updateType, newTripPoint);
     } catch(err) {
       throw new Error('Can\'t add tripPoint');
@@ -53,17 +53,17 @@ export default class TripEventModel extends Observable {
   };
 
   deleteTripPoint = async (updateType, update) => {
-    const index = this.#tripPoints.findIndex((tripPoint) => tripPoint.id === update.id);
+    const index = this.#tripEvents.findIndex((tripPoint) => tripPoint.id === update.id);
 
     if (index === -1) {
       throw new Error('Can\'t delete not existing tripPoint');
     }
 
     try {
-      await this.#tripPointApiService.deleteTripPoint(update);
-      this.#tripPoints = [
-        ...this.tripPoints.slice(0, index),
-        ...this.#tripPoints.slice(index + 1),
+      await this.#tripEventApiService.deleteTripEvent(update);
+      this.#tripEvents = [
+        ...this.tripEvents.slice(0, index),
+        ...this.#tripEvents.slice(index + 1),
       ];
       this._notify(updateType);
     } catch(err) {
@@ -71,19 +71,19 @@ export default class TripEventModel extends Observable {
     }
   };
 
-  #adaptToClient = (tripPoint) => {
-    const adaptedTripPoint = {...tripPoint,
-      dateFrom: tripPoint['date_from'],
-      dateTo: tripPoint['date_to'],
-      offersIDs: tripPoint['offers'],
-      basePrice: tripPoint['base_price'],
+  #adaptToClient = (tripEvent) => {
+    const adaptedTripEvent = {...tripEvent,
+      dateFrom: tripEvent['date_from'],
+      dateTo: tripEvent['date_to'],
+      offersIDs: tripEvent['offers'],
+      basePrice: tripEvent['base_price'],
     };
 
-    delete adaptedTripPoint['date_from'];
-    delete adaptedTripPoint['date_to'];
-    delete adaptedTripPoint['base_price'];
-    delete adaptedTripPoint['offers'];
+    delete adaptedTripEvent['date_from'];
+    delete adaptedTripEvent['date_to'];
+    delete adaptedTripEvent['base_price'];
+    delete adaptedTripEvent['offers'];
 
-    return adaptedTripPoint;
+    return adaptedTripEvent;
   };
 }
