@@ -18,7 +18,7 @@ const createFilter = (filterName, current) => `
 
 const createFilterTemplate = (filters) =>
   `<form class="trip-filters" action="#" method="get">
-    ${filters.map((filterName) => createFilter(filterName)).join('')}
+    ${Object.keys(filters).map((filterName) => createFilter(filterName)).join('')}
     <button class="visually-hidden" type="submit">Accept filter</button>
   </form>`;
 

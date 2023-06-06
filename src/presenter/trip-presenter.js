@@ -15,7 +15,7 @@ const TimeLimit = {
 
 export default class TripPresenter {
   #tripContainer;
-  #tripPointsModel;
+  #tripEventModel;
   #destinationModel;
   #offerModel;
   #filterModel;
@@ -35,17 +35,18 @@ export default class TripPresenter {
   constructor(
     container,
     {
-      tripPointsModel,
+      tripEventModel,
       destinationModel,
       offerModel,
       filterModel
     }) {
     this.#tripContainer = container;
-    this.#tripPointsModel = tripPointsModel;
+    this.#tripEventModel = tripEventModel;
     this.#destinationModel = destinationModel;
     this.#offerModel = offerModel;
     this.#filterModel = filterModel;
-    this.#tripEvents = [...tripPointsModel.tripPoints];
+    tripEventModel.init();
+    this.#tripEvents = [...tripEventModel.tripEvents];
   }
 
   // createPoint = (callback) => {

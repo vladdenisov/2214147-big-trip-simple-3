@@ -110,7 +110,6 @@ const createTripEventsFormTemplate = (eventPoint = {}) => {
       <section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
         <p class="event__destination-description">${destination.description}</p>
-
         <div class="event__photos-container">
           <div class="event__photos-tape">
             ${createPhotosTemplate(destination.pictures)}
@@ -122,7 +121,7 @@ const createTripEventsFormTemplate = (eventPoint = {}) => {
 `;
 };
 
-class TripEventsFormView extends AbstractStatefulView {
+class TripEventFormView extends AbstractStatefulView {
 
   #offers;
   #tripEvent;
@@ -137,6 +136,19 @@ class TripEventsFormView extends AbstractStatefulView {
 
   get template() {
     return createTripEventsFormTemplate(this.#tripEvent);
+  }
+
+  static parseTripEventToState(tripEvent, offers) {
+    return {...tripEvent,
+      currentTypeOffers: offers.find((el) => el.type === tripEvent.type).offers
+    };
+  }
+
+  static parseStateToTripEvent(state) {
+    const trip = {...state};
+
+    delete trip.currentTypeOffers;
+    return trip;
   }
 
   #saveHandler = (event) => {
@@ -157,11 +169,6 @@ class TripEventsFormView extends AbstractStatefulView {
       .addEventListener('change', this.#offersHandler);
   }
 
-  static parseTripPointToState(tripPoint, offers) {
-    return {...tripPoint,
-      currentTypeOffers: offers.find((el) => el.type === tripPoint.type).offers
-    };
-  }
 
   #offersHandler = (evt) => {
     evt.preventDefault();
@@ -185,14 +192,6 @@ class TripEventsFormView extends AbstractStatefulView {
       currentTypeOffers: this.#offers.find((el) => el.type === evt.target.value).offers
     });
   };
-
-
-  static parseStateToTripEvent(state) {
-    const trip = {...state};
-
-    delete trip.currentTypeOffers;
-    return trip;
-  }
 }
 
-export default TripEventsFormView;
+export default TripEventFormView;

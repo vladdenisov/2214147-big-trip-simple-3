@@ -1,4 +1,4 @@
-import TripEventsFormView from '../view/trip-events-form-view';
+import TripEventFormView from '../view/trip-event-form-view';
 import TripEvent from '../view/trip-event-view';
 import {remove, render, replace} from '../framework/render';
 
@@ -50,7 +50,7 @@ export class TripEventPresenter {
     const prevTripEventComponent = this.#tripEventComponent;
     const prevTripEventFormComponent = this.#tripEventFormComponent;
 
-    this.#tripEventFormComponent = new TripEventsFormView({
+    this.#tripEventFormComponent = new TripEventFormView({
       tripPoint: this.#tripEvent,
       onSave: () => {
         this.#replaceFormToEvent();

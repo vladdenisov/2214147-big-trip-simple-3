@@ -4,9 +4,13 @@ export default class TripEventModel extends Observable {
   #tripEvents = [];
   #tripEventApiService = null;
 
-  constructor ({tripPointApiService}) {
+  constructor ({tripEventApiService}) {
     super();
-    this.#tripEventApiService = tripPointApiService;
+    this.#tripEventApiService = tripEventApiService;
+  }
+
+  get tripEvents() {
+    return this.#tripEvents;
   }
 
   init = async () => {
