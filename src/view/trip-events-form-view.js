@@ -5,6 +5,16 @@ import {convertToUpperCase} from '../utils/strings';
 import {EventType, OffersType} from '../utils/const';
 import {getRandomOffers} from '../mock/offer';
 
+const BLANK_TRIPEVENT = {
+  basePrice: 1000,
+  dateFrom: (new Date()).toISOString(),
+  dateTo: (new Date()).toISOString(),
+  destination: undefined,
+  id: 0,
+  offersIDs: [],
+  type: 'flight'
+};
+
 const createPhotosTemplate = (photos) => photos.map((photo) => `<img class="event__photo" src="${photo.src}" alt="${photo.description}">`).join('');
 
 const createDestinationsDataList = (destinations) => destinations.map((e) => `<option value=${e.name}></option>`).join('');
@@ -115,10 +125,10 @@ const createTripEventsFormTemplate = (eventPoint = {}) => {
 class TripEventsFormView extends AbstractStatefulView {
 
   #offers;
-  #tripPoint;
-  constructor({tripPoint, onSave, onReset}) {
+  #tripEvent;
+  constructor({tripEvent = BLANK_TRIPEVENT, onSave, onReset}) {
     super();
-    this.#tripPoint = tripPoint;
+    this.#tripEvent = tripEvent;
     this._callback.onSave = onSave;
     this._callback.onReset = onReset;
     this.#offers = getRandomOffers();
@@ -126,7 +136,7 @@ class TripEventsFormView extends AbstractStatefulView {
   }
 
   get template() {
-    return createTripEventsFormTemplate(this.#tripPoint);
+    return createTripEventsFormTemplate(this.#tripEvent);
   }
 
   #saveHandler = (event) => {
@@ -177,7 +187,7 @@ class TripEventsFormView extends AbstractStatefulView {
   };
 
 
-  static parseStateToTripPoint(state) {
+  static parseStateToTripEvent(state) {
     const trip = {...state};
 
     delete trip.currentTypeOffers;
