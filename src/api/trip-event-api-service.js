@@ -7,8 +7,8 @@ const Methods = {
   DELETE: 'DELETE'
 };
 
-export class TripPointApiService extends ApiService {
-  get tripPoints() {
+export class TripEventApiService extends ApiService {
+  get tripEvents() {
     return this._load({url: 'points'})
       .then(ApiService.parseResponse);
   }
@@ -23,37 +23,37 @@ export class TripPointApiService extends ApiService {
       .then(ApiService.parseResponse);
   }
 
-  updateTripPoint = async (tripPoint) => await ApiService.parseResponse(await this._load({
+  updateTripEvent = async (tripPoint) => await ApiService.parseResponse(await this._load({
     url: `points/${tripPoint.id}`,
     method: Methods.PUT,
     body: JSON.stringify(this.#adaptToServer(tripPoint)),
     headers: new Headers({'Content-Type': 'application/json'}),
   }));
 
-  addTripPoint = async (tripPoint) => await ApiService.parseResponse(await this._load({
+  addTripEvent = async (tripPoint) => await ApiService.parseResponse(await this._load({
     url: 'points',
     method: Methods.POST,
     body: JSON.stringify(this.#adaptToServer(tripPoint)),
     headers: new Headers({'Content-Type': 'application/json'}),
   }));
 
-  deleteTripPoint = async (tripPoint) => await this._load({
+  deleteTripEvent = async (tripPoint) => await this._load({
     url: `points/${tripPoint.id}`,
     method: Methods.DELETE,
   });
 
   #adaptToServer = (tripPoint) => {
-    const adaptedTripPoint = {...tripPoint,
+    const adaptedTripEvent = {...tripPoint,
       'date_from': (tripPoint.dateFrom) ? new Date(tripPoint.dateFrom).toISOString() : new Date().toISOString,
       'date_to': (tripPoint.dateFrom) ? new Date(tripPoint.dateTo).toISOString() : new Date().toISOString,
       'base_price': Number(tripPoint.basePrice),
       'offers': tripPoint.offersIDs
     };
 
-    delete adaptedTripPoint.dateFrom;
-    delete adaptedTripPoint.dateTo;
-    delete adaptedTripPoint.basePrice;
-    delete adaptedTripPoint.offersIDs;
-    return adaptedTripPoint;
+    delete adaptedTripEvent.dateFrom;
+    delete adaptedTripEvent.dateTo;
+    delete adaptedTripEvent.basePrice;
+    delete adaptedTripEvent.offersIDs;
+    return adaptedTripEvent;
   };
 }
