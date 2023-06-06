@@ -44,3 +44,10 @@ export const OffersType = {
     price: '40'
   }
 };
+
+export const UpdateType = {
+  INIT: 'INIT',
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
