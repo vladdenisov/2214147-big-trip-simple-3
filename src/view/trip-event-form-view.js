@@ -1,4 +1,3 @@
-import {generateDestination} from '../mock/destination';
 import {convertToFormDate, convertToTime} from '../utils/date';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import {convertToUpperCase} from '../utils/strings';
@@ -194,13 +193,11 @@ class TripEventFormView extends AbstractStatefulView {
 
   #eventTypeHandler = (evt) => {
     evt.preventDefault();
-    console.log(evt.target.value);
     this.updateElement({
       type: evt.target.value,
       offersIDs: [],
       currentTypeOffers: this.#offers.find((el) => el.type === evt.target.value).offers
     });
-    console.log(this._state);
   };
 
   #priceInputHandler = (evt) => {
@@ -217,10 +214,10 @@ class TripEventFormView extends AbstractStatefulView {
     });
   };
 
-  #deleteHandler = (e) => {
-    e.preventDefault();
-    this._callback.onDelete(TripEventFormView.parseStateToTripEvent(this._state));
-  };
+  // #deleteHandler = (e) => {
+  //   e.preventDefault();
+  //   this._callback.onDelete(TripEventFormView.parseStateToTripEvent(this._state));
+  // };
 
   #saveHandler = (event) => {
     event.preventDefault();

@@ -107,14 +107,14 @@ export class TripEventPresenter {
   }
 
 
-  init() {
+  init(tripEvent = this.#tripEvent, destinations = this.#destinations, offers = this.#offers) {
     const prevTripEventComponent = this.#tripEventComponent;
     const prevTripEventFormComponent = this.#tripEventFormComponent;
 
     this.#tripEventFormComponent = new TripEventFormView({
-      tripEvent: this.#tripEvent,
-      destinations: this.#destinations,
-      offers: this.#offers,
+      tripEvent: tripEvent,
+      destinations: destinations,
+      offers: offers,
       onSave: (update) => {
         this.#handleSave(update);
         this.#replaceFormToEvent();
@@ -125,9 +125,9 @@ export class TripEventPresenter {
     });
 
     this.#tripEventComponent = new TripEvent({
-      tripEvent: this.#tripEvent,
-      destinations: this.#destinations,
-      offers: this.#offers,
+      tripEvent: tripEvent,
+      destinations: destinations,
+      offers: offers,
       onRollupClick: () => {
         this.#tripEventFormComponent.reset(this.#tripEvent);
         this.#replacePointToForm();

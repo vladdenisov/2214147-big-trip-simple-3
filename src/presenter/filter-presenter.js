@@ -28,8 +28,8 @@ export default class FilterPresenter {
 
     this.#filterComponent = new FilterView({
       filters: this.filters,
-      currentFilterType: this.#filterModel.filter,
-      onFilterTypeChange: this.#handleFilterTypeChange
+      current: this.#filterModel.filter,
+      onFilterChange: this.#handleFilterTypeChange
     });
 
     if (!prevFilterComponent) {
@@ -51,5 +51,4 @@ export default class FilterPresenter {
     }
     this.#filterModel.setFilter(UpdateType.MAJOR, filterType);
   };
-
 }

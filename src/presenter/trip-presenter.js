@@ -1,4 +1,4 @@
-import {remove, render} from '../framework/render.js';
+import {remove, render, RenderPosition} from '../framework/render.js';
 import TripEventsListView from '../view/trip-events-list-view.js';
 import TripEventsSortingView from '../view/trip-events-sorting-view.js';
 import NoPointsView from '../view/no-trip-events-view';
@@ -9,6 +9,7 @@ import UiBlocker from '../framework/ui-blocker/ui-blocker';
 import {filters} from '../utils/filters';
 import {sorts} from '../utils/sorts';
 import CreateTripEventPresenter from './createTripEvent-presenter';
+import PreloaderView from '../view/preloader-view';
 
 const TimeLimit = {
   LOWER_LIMIT: 350,
@@ -42,6 +43,8 @@ export default class TripPresenter {
     upperLimit: TimeLimit.UPPER_LIMIT
   });
 
+  #preloaderView = new PreloaderView();
+
   #currentSortType = DEFAULT_SORT_TYPE;
   constructor(
     container,
@@ -57,7 +60,6 @@ export default class TripPresenter {
     this.#offerModel = offerModel;
     this.#filterModel = filterModel;
     tripEventModel.init();
-    console.log(tripEventModel.tripEvents);
     this.#tripEvents = [...tripEventModel.tripEvents];
 
     this.#tripEventModel.addObserver(this.#handleModelEvent);
@@ -81,13 +83,13 @@ export default class TripPresenter {
     return this.#offerModel.offers;
   }
 
-  createEvent = (callback) => {
+  createEvent = () => {
     this.#currentSortType = DEFAULT_SORT_TYPE;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this.#createTripEventPresenter = new CreateTripEventPresenter({
       tripEventsListContainer: this.#tripContainer,
       onChange: this.#handleUserAction,
-      onDestroy: (c) => console.log(c)
+      // onDestroy: (c) => console.log(c)
     });
     this.#createTripEventPresenter.init({destinations: this.destinations, offers: this.offers});
   };
@@ -117,7 +119,6 @@ export default class TripPresenter {
 
     this.#currentSortType = sortType;
     this.#sortTrips(sortType);
-    console.log(this.#tripEvents)
     this.#clear();
     this.#renderSortingView();
     this.#renderEventsList();
@@ -168,6 +169,7 @@ export default class TripPresenter {
 
   #render = () => {
     if (this.#isLoading) {
+      this.#renderPreloader();
       return;
     }
 
@@ -195,9 +197,9 @@ export default class TripPresenter {
     }
   };
 
-  // #renderPreloader = () => {
-  //   render(this.#preloaderComponent, this.#tripContainer, RenderPosition.AFTERBEGIN)
-  // }
+  #renderPreloader = () => {
+    render(this.#preloaderView, this.#tripContainer, RenderPosition.AFTERBEGIN);
+  };
 
   #sortTrips = (sortType) => {
     switch (sortType) {
@@ -214,7 +216,6 @@ export default class TripPresenter {
   };
 
   #handleModelEvent = (updateType, data) => {
-    console.log(updateType, data);
     switch (updateType) {
       case UpdateType.PATCH:
         this.#tripEventPresenter.get(data.id).init(data, this.destinations, this.offers);
@@ -229,7 +230,7 @@ export default class TripPresenter {
         break;
       case UpdateType.INIT:
         this.#isLoading = false;
-        // remove(this.#loadingComponent);
+        remove(this.#preloaderView);
         this.#clear();
         this.#render();
         break;

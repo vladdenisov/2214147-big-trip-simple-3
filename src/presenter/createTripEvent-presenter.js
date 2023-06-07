@@ -29,6 +29,8 @@ export default class CreateTripEventPresenter {
 
     render(this.#tripEventsFormComponent, this.#tripEventsListContainer,
       RenderPosition.AFTERBEGIN);
+
+    document.body.addEventListener('keydown', this.#ecsKeyHandler);
   };
 
   setSaving() {
@@ -60,23 +62,23 @@ export default class CreateTripEventPresenter {
     remove(this.#tripEventsFormComponent);
     this.#tripEventsFormComponent = null;
 
-    //document.body.removeEventListener('keydown', this.#ecsKeyDownHandler);
+    document.body.removeEventListener('keydown', this.#ecsKeyHandler);
   }
 
-  // #ecsKeyDownHandler = (evt) => {
-  //   if () {
-  //     evt.preventDefault();
-  //     this.destroy();
-  //   }
-  // };
+  #ecsKeyHandler = (evt) => {
+    if (evt.key === 'Escape') {
+      evt.preventDefault();
+      this.destroy();
+    }
+  };
 
   #onSubmit = (tripEvent) => {
-    console.log(tripEvent)
     this.#handleChange(
       UserAction.CREATE_EVENT,
       UpdateType.MINOR,
       this.#deleteId(tripEvent)
     );
+    this.destroy();
   };
 
   #onDeleteClick = () => {
