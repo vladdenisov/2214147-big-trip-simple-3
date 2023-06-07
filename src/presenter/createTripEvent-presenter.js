@@ -16,7 +16,7 @@ export default class CreateTripEventPresenter {
   }
 
   init = ({destinations, offers}) => {
-    if (this.#tripEventsListContainer) {
+    if (this.#tripEventsFormComponent) {
       return;
     }
 
@@ -71,6 +71,7 @@ export default class CreateTripEventPresenter {
   // };
 
   #onSubmit = (tripEvent) => {
+    console.log(tripEvent)
     this.#handleChange(
       UserAction.CREATE_EVENT,
       UpdateType.MINOR,

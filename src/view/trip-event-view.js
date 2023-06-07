@@ -19,7 +19,8 @@ const createTripEventTemplate = (eventPoint, destinations, offers) => {
   console.log(eventPoint);
   const {offersIDs, type} = eventPoint;
 
-  const destination = destinations[eventPoint.destination];
+  const destination = destinations.find((d) => d.id === eventPoint.destination);
+  console.log(eventPoint, destination)
 
   const offersArray = offers
     .filter((e) => (e.id in offersIDs));

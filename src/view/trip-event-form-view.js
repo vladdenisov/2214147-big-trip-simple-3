@@ -55,9 +55,11 @@ const createTripEventsFormTemplate = (eventPoint = {}, destinations, offers) => 
   let destination = destinations.find((d) => d.id === eventPoint.destination);
   const destinationsDataList = createDestinationsDataList(destinations);
 
-  if (!destination) {
-    destination = generateDestination(1);
-  }
+
+  console.log(eventPoint, destination)
+  // if (!destination) {
+  //   destination = generateDestination(1);
+  // }
 
   return `
   <form class="event event--edit" action="#" method="post">
@@ -141,7 +143,7 @@ class TripEventFormView extends AbstractStatefulView {
     this.#offers = offers;
     this.#destinations = destinations;
 
-    this.#tripEvent = tripEvent;
+    this._setState(TripEventFormView.parseTripEventToState(tripEvent, offers));
 
     this._callback.onSave = onSave;
     this._callback.onReset = onReset;
@@ -152,7 +154,7 @@ class TripEventFormView extends AbstractStatefulView {
   }
 
   get template() {
-    return createTripEventsFormTemplate(this.#tripEvent, this.#destinations, this.#offers);
+    return createTripEventsFormTemplate(this._state, this.#destinations, this.#offers);
   }
 
   static parseTripEventToState(tripEvent, offers) {

@@ -27,7 +27,10 @@ const tripPresenter = new TripPresenter(tripEventsSection, {tripEventModel, dest
 
 const filterPresenter = new FilterPresenter({filterContainer, filterModel, tripEventModel});
 
+const createTripEventButton = new CreateTripEventButton({onClick: () => {
+  tripPresenter.createEvent();
+}});
 
-tripEventModel.init().finally(() => render(new CreateTripEventButton({onClick: () => tripPresenter.createEvent()}), headerBlock));
+tripEventModel.init().finally(() => render(createTripEventButton, headerBlock));
 tripPresenter.init();
 filterPresenter.init();

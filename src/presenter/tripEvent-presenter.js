@@ -89,6 +89,23 @@ export class TripEventPresenter {
     }
   }
 
+  setAborting() {
+    if (this.#mode === Mode.DEFAULT) {
+      this.#tripEventComponent.shake();
+      return;
+    }
+
+    const resetFormState = () => {
+      this.#tripEventFormComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#tripEventFormComponent.shake(resetFormState);
+  }
+
 
   init() {
     const prevTripEventComponent = this.#tripEventComponent;

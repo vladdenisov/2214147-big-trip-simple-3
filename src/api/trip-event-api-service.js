@@ -43,9 +43,10 @@ export class TripEventApiService extends ApiService {
   });
 
   #adaptToServer = (tripPoint) => {
+    console.log(tripPoint)
     const adaptedTripEvent = {...tripPoint,
       'date_from': (tripPoint.dateFrom) ? new Date(tripPoint.dateFrom).toISOString() : new Date().toISOString,
-      'date_to': (tripPoint.dateFrom) ? new Date(tripPoint.dateTo).toISOString() : new Date().toISOString,
+      'date_to': (tripPoint.dateTo) ? new Date(tripPoint.dateTo).toISOString() : new Date().toISOString,
       'base_price': Number(tripPoint.basePrice),
       'offers': tripPoint.offersIDs
     };

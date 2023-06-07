@@ -86,10 +86,9 @@ export default class TripPresenter {
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this.#createTripEventPresenter = new CreateTripEventPresenter({
       tripEventsListContainer: this.#tripContainer,
-      onChange: (c) => console.log(c),
+      onChange: this.#handleUserAction,
       onDestroy: (c) => console.log(c)
     });
-
     this.#createTripEventPresenter.init({destinations: this.destinations, offers: this.offers});
   };
 
@@ -123,6 +122,7 @@ export default class TripPresenter {
   };
 
   #handleUserAction = async (actionType, updateType, update) => {
+    console.log(update)
     this.#uiBlocker.block();
     switch (actionType) {
       case UserAction.CREATE_EVENT:

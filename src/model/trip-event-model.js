@@ -47,6 +47,7 @@ export default class TripEventModel extends Observable {
   };
 
   addTripPoint = async (updateType, update) => {
+    console.log(update)
     try {
       const response = await this.#tripEventApiService.addTripEvent(update);
       const newTripPoint = this.#adaptToClient(response);
