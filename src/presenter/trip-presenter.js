@@ -42,7 +42,7 @@ export default class TripPresenter {
     upperLimit: TimeLimit.UPPER_LIMIT
   });
 
-  #currentSortType = SortType.DAY;
+  #currentSortType = DEFAULT_SORT_TYPE;
   constructor(
     container,
     {
@@ -82,7 +82,7 @@ export default class TripPresenter {
   }
 
   createEvent = (callback) => {
-    this.#currentSortType = SortType.DAY;
+    this.#currentSortType = DEFAULT_SORT_TYPE;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this.#createTripEventPresenter = new CreateTripEventPresenter({
       tripEventsListContainer: this.#tripContainer,
@@ -115,14 +115,15 @@ export default class TripPresenter {
       return;
     }
 
+    this.#currentSortType = sortType;
     this.#sortTrips(sortType);
+    console.log(this.#tripEvents)
     this.#clear();
     this.#renderSortingView();
     this.#renderEventsList();
   };
 
   #handleUserAction = async (actionType, updateType, update) => {
-    console.log(update)
     this.#uiBlocker.block();
     switch (actionType) {
       case UserAction.CREATE_EVENT:

@@ -52,14 +52,8 @@ const createEventOffersList = (id, selectedIds, offers) => `<section class="even
 const createTripEventsFormTemplate = (eventPoint = {}, destinations, offers) => {
 
   const {type, id} = eventPoint;
-  let destination = destinations.find((d) => d.id === eventPoint.destination);
+  const destination = destinations.find((d) => d.id === eventPoint.destination);
   const destinationsDataList = createDestinationsDataList(destinations);
-
-
-  console.log(eventPoint, destination)
-  // if (!destination) {
-  //   destination = generateDestination(1);
-  // }
 
   return `
   <form class="event event--edit" action="#" method="post">
@@ -126,8 +120,6 @@ const createTripEventsFormTemplate = (eventPoint = {}, destinations, offers) => 
 class TripEventFormView extends AbstractStatefulView {
   #offers;
   #destinations;
-
-  #tripEvent;
 
   #isEditForm;
   constructor({

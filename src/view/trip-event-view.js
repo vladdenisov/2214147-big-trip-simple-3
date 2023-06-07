@@ -16,11 +16,9 @@ const createOffersTemplate = (offers) => offers.map((offer) => `
   `).join('');
 
 const createTripEventTemplate = (eventPoint, destinations, offers) => {
-  console.log(eventPoint);
   const {offersIDs, type} = eventPoint;
 
   const destination = destinations.find((d) => d.id === eventPoint.destination);
-  console.log(eventPoint, offers)
 
   const offersArray = offers
     .find((e) => e.type === type)['offers']
