@@ -20,6 +20,7 @@ export default class TripEventModel extends Observable {
     } catch(error) {
       this.#tripEvents = [];
     }
+    console.log(this.#tripEvents);
     this._notify(UpdateType.INIT);
   };
 

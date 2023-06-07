@@ -22,27 +22,10 @@ export const EventType = {
   RESTAURANT: 'restaurant'
 };
 
-export const OffersType = {
-  LUGGAGE: {
-    text: 'Add luggage',
-    price: '30'
-  },
-  COMFORT: {
-    text: 'Switch to comfort class',
-    price: '100'
-  },
-  MEAL: {
-    text: 'Add meal',
-    price: '15'
-  },
-  SEATS: {
-    text: 'Choose seats',
-    price: '5'
-  },
-  TRAIN: {
-    text: 'Travel by train',
-    price: '40'
-  }
+export const UserAction = {
+  UPDATE_EVENT: 'UPDATE_EVENT',
+  CREATE_EVENT: 'CREATE_EVENT',
+  DELETE_EVENT: 'DELETE_EVENT',
 };
 
 export const UpdateType = {
