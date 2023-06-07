@@ -116,8 +116,8 @@ export default class TripPresenter {
     }
 
     this.#sortTrips(sortType);
-    this.#renderSortingView();
     this.#clear();
+    this.#renderSortingView();
     this.#renderEventsList();
   };
 
@@ -158,8 +158,7 @@ export default class TripPresenter {
     this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
   };
 
-  #renderEventsList = async () => {
-    this.#tripEvents = await this.#tripEventModel.tripEvents;
+  #renderEventsList = () => {
     render(this.#tripEventsListComponent, this.#tripContainer);
     for (let i = 0; i < this.#tripEvents.length; i++) {
       this.#renderTripPoint(this.#tripEvents[i]);
@@ -170,6 +169,9 @@ export default class TripPresenter {
     if (this.#isLoading) {
       return;
     }
+
+    this.#tripEvents = this.#tripEventModel.tripEvents;
+
     if (this.#tripEvents.length === 0) {
       this.#renderNoEvents();
       return;
@@ -218,17 +220,17 @@ export default class TripPresenter {
         break;
       case UpdateType.MINOR:
         this.#clear();
-        this.#renderEventsList();
+        this.#render();
         break;
       case UpdateType.MAJOR:
         this.#clear(true);
-        this.#renderEventsList();
+        this.#render();
         break;
       case UpdateType.INIT:
         this.#isLoading = false;
         // remove(this.#loadingComponent);
         this.#clear();
-        this.#renderEventsList();
+        this.#render();
         break;
     }
   };
