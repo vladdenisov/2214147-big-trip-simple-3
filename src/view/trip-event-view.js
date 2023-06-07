@@ -4,8 +4,6 @@ import {
   convertToEventDateTime,
   convertToTime
 } from '../utils/date';
-import {getRandomOffers} from '../mock/offer.js';
-import {randomDesinations} from '../mock/destination';
 import AbstractView from '../framework/view/abstract-view';
 
 
@@ -17,17 +15,20 @@ const createOffersTemplate = (offers) => offers.map((offer) => `
     </li>
   `).join('');
 
-const createTripEventTemplate = (eventPoint) => {
-  const {destination, offers, type} = eventPoint;
-  const offersArray = getRandomOffers()
-    .find((e) => (e.type === type))['offers']
-    .filter((e) => (e.id in offers));
-  const eventDateTime = convertToEventDateTime(eventPoint.date_from);
-  const eventDate = convertToEventDate(eventPoint.date_from);
-  const fromDateTime = convertToDateTime(eventPoint.date_from);
-  const fromTime = convertToTime(eventPoint.date_from);
-  const toDateTime = convertToDateTime(eventPoint.date_to);
-  const toTime = convertToTime(eventPoint.date_to);
+const createTripEventTemplate = (eventPoint, destinations, offers) => {
+  const {offersIDs, type} = eventPoint;
+
+  const destination = destinations.find((d) => d.id === eventPoint.destination);
+
+  const offersArray = offers
+    .find((e) => e.type === type)['offers']
+    .filter((e) => (e.id in offersIDs));
+  const eventDateTime = convertToEventDateTime(eventPoint.dateFrom);
+  const eventDate = convertToEventDate(eventPoint.dateFrom);
+  const fromDateTime = convertToDateTime(eventPoint.dateFrom);
+  const fromTime = convertToTime(eventPoint.dateFrom);
+  const toDateTime = convertToDateTime(eventPoint.dateTo);
+  const toTime = convertToTime(eventPoint.dateTo);
   const offersTemplate = createOffersTemplate(offersArray);
 
   return `<li class="trip-events__item">
@@ -36,7 +37,7 @@ const createTripEventTemplate = (eventPoint) => {
         <div class="event__type">
             <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
         </div>
-        <h3 class="event__title">${randomDesinations.getDestination(destination).name}</h3>
+        <h3 class="event__title">${destination.name}</h3>
         <div class="event__schedule">
             <p class="event__time">
                 <time class="event__start-time" datetime="${fromDateTime}">${fromTime}</time>
@@ -45,7 +46,7 @@ const createTripEventTemplate = (eventPoint) => {
             </p>
         </div>
         <p class="event__price">
-        &euro;&nbsp;<span class="event__price-value">${eventPoint.base_price}</span>
+        &euro;&nbsp;<span class="event__price-value">${eventPoint.basePrice}</span>
         </p>
         <h4 class="visually-hidden">Offers:</h4>
         <ul class="event__selected-offers">
@@ -60,13 +61,27 @@ const createTripEventTemplate = (eventPoint) => {
 
 
 class TripEventView extends AbstractView {
-  constructor({tripPoint}) {
+  #destinations;
+  #offers;
+  #tripEvent;
+
+  constructor({tripEvent, onRollupClick, destinations, offers}) {
     super();
-    this.tripPoint = tripPoint;
+    this.#tripEvent = tripEvent;
+    this.#offers = offers;
+    this.#destinations = destinations;
+    this._callback.onRollupClick = onRollupClick;
+
+    this.element.querySelector('.event__rollup-btn',).addEventListener('click', this.#rollupHandler);
   }
 
+  #rollupHandler = (event) => {
+    event.preventDefault();
+    this._callback.onRollupClick();
+  };
+
   get template() {
-    return createTripEventTemplate(this.tripPoint);
+    return createTripEventTemplate(this.#tripEvent, this.#destinations, this.#offers);
   }
 }
 

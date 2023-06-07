@@ -19,7 +19,7 @@ const createTripSortingBlock = (sortName) => (
 
 const createTripEventsSortingTemplate = (sorts) => `
   <form class="trip-events__trip-sort  trip-sort" action="#" method="get">
-    ${sorts.map((sort) => createTripSortingBlock(sort)).join('')}
+    ${Object.keys(sorts).map((sort) => createTripSortingBlock(sort)).join('')}
   </form>
 `;
 

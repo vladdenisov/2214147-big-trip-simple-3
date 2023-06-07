@@ -1,18 +1,36 @@
 import TripPresenter from './presenter/trip-presenter.js';
 import { render } from './render.js';
-import FiltersView from './view/filter-view.js';
-import TripPointModel from './model/trip-point-model';
-import {generateFilter} from './mock/filters';
+import TripEventModel from './model/trip-event-model';
+import {TripEventApiService} from './api/trip-event-api-service';
+import OfferModel from './model/offer-model';
+import DestinationModel from './model/destination-model';
+import FilterModel from './model/filter-model';
+import FilterPresenter from './presenter/filter-presenter';
+import CreateTripEventButton from './view/create-trip-event-button';
 
-const tripControlsFiltersBlock = document.querySelector('.trip-controls__filters');
+const filterContainer = document.querySelector('.trip-controls__filters');
 const tripEventsSection = document.querySelector('.trip-events');
+const headerBlock = document.querySelector('.trip-main');
 
-const tripPointsModel = new TripPointModel();
-const tripPresenter = new TripPresenter(tripEventsSection, tripPointsModel);
+const AUTHORIZATION = 'Basic ipogramme';
+const END_POINT = 'https://18.ecmascript.pages.academy/big-trip';
 
+const tripEventApiService = new TripEventApiService(END_POINT, AUTHORIZATION);
 
-const filters = generateFilter(tripPointsModel.tripPoints);
+const tripEventModel = new TripEventModel({tripEventApiService});
 
-render(new FiltersView({filters}), tripControlsFiltersBlock);
+const offerModel = new OfferModel({tripEventApiService});
+const destinationModel = new DestinationModel({tripEventApiService});
+const filterModel = new FilterModel();
 
+const tripPresenter = new TripPresenter(tripEventsSection, {tripEventModel, destinationModel, offerModel, filterModel});
+
+const filterPresenter = new FilterPresenter({filterContainer, filterModel, tripEventModel});
+
+const createTripEventButton = new CreateTripEventButton({onClick: () => {
+  tripPresenter.createEvent();
+}});
+
+tripEventModel.init().finally(() => render(createTripEventButton, headerBlock));
 tripPresenter.init();
+filterPresenter.init();
