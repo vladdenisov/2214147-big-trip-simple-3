@@ -138,6 +138,7 @@ class TripEventFormView extends AbstractStatefulView {
 
   #fromDatepicker;
   #toDatepicker;
+
   constructor({
     tripEvent = BLANK_TRIPEVENT,
     onSave,
@@ -166,26 +167,6 @@ class TripEventFormView extends AbstractStatefulView {
       return '';
     }
     return createTripEventsFormTemplate(this._state, this.#destinations, this.#offers, this.#isEditForm);
-  }
-
-  static parseTripEventToState(tripEvent, offers) {
-    const currentTypeOffers = offers.find((el) => el.type === tripEvent.type);
-    return {...tripEvent,
-      currentTypeOffers: currentTypeOffers ? currentTypeOffers.offers : [],
-      isDisabled: false,
-      isSaving: false,
-      isDeleting: false,
-    };
-  }
-
-  static parseStateToTripEvent(state) {
-    const tripEvent = {...state};
-
-    delete tripEvent.currentTypeOffers;
-    delete tripEvent.isDisabled;
-    delete tripEvent.isSaving;
-    delete tripEvent.isDeleting;
-    return tripEvent;
   }
 
   _restoreHandlers() {
@@ -220,6 +201,31 @@ class TripEventFormView extends AbstractStatefulView {
       this.#toDatepicker.destroy();
       this.#toDatepicker = null;
     }
+  }
+
+  #setFromDatePicker() {
+    this.#fromDatepicker = flatpickr(
+      this.element.querySelector(`#event-start-time-${this._state.id}`),
+      {
+        enableTime: true,
+        dateFormat: 'd/m/y H:i',
+        defaultDate: convertToFormDate(this._state.dateFrom),
+        onChange: this.#fromDateChangeHandler,
+      },
+    );
+  }
+
+  #setToDatePicker() {
+    this.#toDatepicker = flatpickr(
+      this.element.querySelector(`#event-end-time-${this._state.id}`),
+      {
+        enableTime: true,
+        dateFormat: 'd/m/y H:i',
+        defaultDate: convertToFormDate(this._state.dateTo),
+        minDate: convertToFormDate(this._state.dateFrom),
+        onChange: this.#toDateChangeHandler,
+      },
+    );
   }
 
   #offersHandler = (evt) => {
@@ -296,29 +302,25 @@ class TripEventFormView extends AbstractStatefulView {
     }
   };
 
-  #setFromDatePicker() {
-    this.#fromDatepicker = flatpickr(
-      this.element.querySelector(`#event-start-time-${this._state.id}`),
-      {
-        enableTime: true,
-        dateFormat: 'd/m/y H:i',
-        defaultDate: convertToFormDate(this._state.dateFrom),
-        onChange: this.#fromDateChangeHandler,
-      },
-    );
+  static parseTripEventToState(tripEvent, offers) {
+    const currentTypeOffers = offers.find((el) => el.type === tripEvent.type);
+    return {
+      ...tripEvent,
+      currentTypeOffers: currentTypeOffers ? currentTypeOffers.offers : [],
+      isDisabled: false,
+      isSaving: false,
+      isDeleting: false,
+    };
   }
 
-  #setToDatePicker() {
-    this.#toDatepicker = flatpickr(
-      this.element.querySelector(`#event-end-time-${this._state.id}`),
-      {
-        enableTime: true,
-        dateFormat: 'd/m/y H:i',
-        defaultDate: convertToFormDate(this._state.dateTo),
-        minDate: convertToFormDate(this._state.dateFrom),
-        onChange: this.#toDateChangeHandler,
-      },
-    );
+  static parseStateToTripEvent(state) {
+    const tripEvent = {...state};
+
+    delete tripEvent.currentTypeOffers;
+    delete tripEvent.isDisabled;
+    delete tripEvent.isSaving;
+    delete tripEvent.isDeleting;
+    return tripEvent;
   }
 }
 

@@ -1,9 +1,4 @@
-import {
-  convertToDateTime,
-  convertToEventDate,
-  convertToEventDateTime,
-  convertToTime
-} from '../utils/date';
+import {convertToDateTime, convertToEventDate, convertToEventDateTime, convertToTime} from '../utils/date';
 import AbstractView from '../framework/view/abstract-view';
 
 

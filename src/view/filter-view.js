@@ -26,6 +26,7 @@ const createFilterTemplate = (filters, current) =>
 class FiltersView extends AbstractView {
   #filters;
   #current;
+
   constructor({filters, current, onFilterChange}) {
     super();
     this.#filters = filters;

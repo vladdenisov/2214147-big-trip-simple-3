@@ -1,6 +1,5 @@
 import TripEventFormView from '../view/trip-event-form-view';
-import {remove, RenderPosition} from '../framework/render';
-import {render} from '../framework/render';
+import {remove, render, RenderPosition} from '../framework/render';
 import {UpdateType, UserAction} from '../utils/const';
 
 export default class CreateTripEventPresenter {
@@ -9,6 +8,7 @@ export default class CreateTripEventPresenter {
 
   #handleChange;
   #handelDestroy;
+
   constructor({tripEventsListContainer, onChange, onDestroy}) {
     this.#tripEventsListContainer = tripEventsListContainer;
     this.#handleChange = onChange;

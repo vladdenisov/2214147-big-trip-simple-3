@@ -1,10 +1,11 @@
-import { UpdateType } from '../utils/const';
+import {UpdateType} from '../utils/const';
 import Observable from '../framework/observable';
+
 export default class TripEventModel extends Observable {
   #tripEvents = [];
   #tripEventApiService = null;
 
-  constructor ({tripEventApiService}) {
+  constructor({tripEventApiService}) {
     super();
     this.#tripEventApiService = tripEventApiService;
   }
@@ -17,7 +18,7 @@ export default class TripEventModel extends Observable {
     try {
       const tripEvents = await this.#tripEventApiService.tripEvents;
       this.#tripEvents = tripEvents.map(this.#adaptToClient);
-    } catch(error) {
+    } catch (error) {
       this.#tripEvents = [];
     }
     this._notify(UpdateType.INIT);
@@ -40,7 +41,7 @@ export default class TripEventModel extends Observable {
       ];
 
       this._notify(updateType, updatedTripEvents);
-    } catch(err) {
+    } catch (err) {
       throw new Error('Can\'t update tripPoint');
     }
   };
@@ -51,7 +52,7 @@ export default class TripEventModel extends Observable {
       const newTripPoint = this.#adaptToClient(response);
       this.#tripEvents = [newTripPoint, ...this.#tripEvents];
       this._notify(updateType, newTripPoint);
-    } catch(err) {
+    } catch (err) {
       throw new Error('Can\'t add tripPoint');
     }
   };
@@ -70,13 +71,14 @@ export default class TripEventModel extends Observable {
         ...this.#tripEvents.slice(index + 1),
       ];
       this._notify(updateType);
-    } catch(err) {
+    } catch (err) {
       throw new Error('Can\'t delete tripPoint');
     }
   };
 
   #adaptToClient = (tripEvent) => {
-    const adaptedTripEvent = {...tripEvent,
+    const adaptedTripEvent = {
+      ...tripEvent,
       dateFrom: tripEvent['date_from'],
       dateTo: tripEvent['date_to'],
       offersIDs: tripEvent['offers'],

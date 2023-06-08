@@ -10,6 +10,8 @@ export const convertToDateTime = (date) => date.substring(0, date.indexOf('.'));
 export const convertToTime = (date) => dayjs(date).format(TIME_FORMAT);
 export const convertToFormDate = (date) => dayjs(date).format(EVENT_FORMAT);
 export const compareDates = (a, b) => dayjs(a).isBefore(dayjs(b)) ? -1 : 1;
+export const isTripDateBeforeToday = (date) => dayjs(date).isBefore(dayjs(), 'D') || dayjs(date).isSame(dayjs(), 'D');
+
 
 export const compareTime = (a, b) => {
   const aDate = dayjs(a);
