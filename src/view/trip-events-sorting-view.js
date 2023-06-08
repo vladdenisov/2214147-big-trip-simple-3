@@ -1,8 +1,7 @@
 import AbstractView from '../framework/view/abstract-view';
 import {makeLowercased} from '../utils/strings';
-import {SortType} from '../utils/const';
 
-const createTripSortingBlock = (sortName) => (
+const createTripSortingBlock = (sortName, current) => (
   `
     <div class="trip-sort__item  trip-sort__item--${makeLowercased(sortName)}">
       <input
@@ -10,26 +9,32 @@ const createTripSortingBlock = (sortName) => (
         class="trip-sort__input visually-hidden"
         type="radio" name="trip-sort"
         value="sort-${makeLowercased(sortName)}"
-        ${sortName === SortType.DAY ? 'checked' : ''}
+        ${sortName === current ? 'checked' : ''}
       >
       <label class="trip-sort__btn" for="sort-${makeLowercased(sortName)}" data-sort-type="${sortName}">${sortName}</label>
     </div>`
 );
 
 
-const createTripEventsSortingTemplate = (sorts) => `
+const createTripEventsSortingTemplate = (sorts, current) => `
   <form class="trip-events__trip-sort  trip-sort" action="#" method="get">
-    ${Object.keys(sorts).map((sort) => createTripSortingBlock(sort)).join('')}
+    ${Object.keys(sorts).map((sort) => createTripSortingBlock(sort, current)).join('')}
   </form>
 `;
 
 class TripEventsSortingView extends AbstractView {
   #sorts = [];
+  #current;
 
-  constructor({sorts}) {
+  constructor({sorts, current}) {
     super();
     this.#sorts = sorts;
+    this.#current = current;
   }
+
+  changeCurrentType = (type) => {
+    this.#current = type;
+  };
 
   setSortTypeChangeHandler = (callback) => {
     this._callback.sortTypeChange = callback;
@@ -45,7 +50,7 @@ class TripEventsSortingView extends AbstractView {
   };
 
   get template() {
-    return createTripEventsSortingTemplate(this.#sorts);
+    return createTripEventsSortingTemplate(this.#sorts, this.#current);
   }
 }
 
