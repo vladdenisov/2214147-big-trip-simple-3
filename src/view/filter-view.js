@@ -8,17 +8,17 @@ const createFilter = (filter, current) => `
             class="trip-filters__filter-input visually-hidden"
             type="radio"
             name="trip-filter"
-            value="${makeLowercased(filter.type)}"
-            ${filter === current ? 'checked' : ''}
+            value="${filter.type}"
+            ${filter.type === current ? 'checked' : ''}
         >
         <label class="trip-filters__filter-label" for="filter-${makeLowercased(filter.type)}">${filter.type}</label>
     </div>
 `;
 
 
-const createFilterTemplate = (filters) =>
+const createFilterTemplate = (filters, current) =>
   `<form class="trip-filters" action="#" method="get">
-    ${filters.map((filter) => createFilter(filter)).join('')}
+    ${filters.map((filter) => createFilter(filter, current)).join('')}
     <button class="visually-hidden" type="submit">Accept filter</button>
   </form>`;
 
@@ -36,7 +36,7 @@ class FiltersView extends AbstractView {
   }
 
   get template() {
-    return createFilterTemplate(this.#filters);
+    return createFilterTemplate(this.#filters, this.#current);
   }
 
   #filterChangeHandler = (evt) => {

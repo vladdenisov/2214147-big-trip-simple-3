@@ -41,55 +41,54 @@ export class TripEventPresenter {
     this.#onDataChange = onDataChange;
   }
 
-  #closeEditFormOnEcsapeKey(event) {
+  #closeEditFormOnEscapeKey = (event) => {
     if (event.key === 'Escape') {
       event.preventDefault();
       this.#replaceFormToEvent();
     }
-  }
+  };
 
-  #replacePointToForm() {
+  #replacePointToForm = () => {
     replace(this.#tripEventFormComponent, this.#tripEventComponent);
-    document.addEventListener('keydown', this.#closeEditFormOnEcsapeKey);
+    document.addEventListener('keydown', this.#closeEditFormOnEscapeKey);
     this.#handleModeChange();
     this.#mode = Mode.EDITING;
-  }
+  };
 
-  #replaceFormToEvent() {
+  #replaceFormToEvent = () => {
     replace(this.#tripEventComponent, this.#tripEventFormComponent);
-    document.removeEventListener('keydown', this.#closeEditFormOnEcsapeKey);
+    document.removeEventListener('keydown', this.#closeEditFormOnEscapeKey);
     this.#mode = Mode.DEFAULT;
-  }
+  };
 
   #handleSave = (update) => {
-    const isMinorUpdate = !compareDates(this.#tripEvent.dateFrom, update.dateFrom) === 0 || this.#tripEvent.basePrice !== update.basePrice;
+    const isMinorUpdate = compareDates(this.#tripEvent.dateFrom, update.dateFrom) !== 0 || this.#tripEvent.basePrice !== update.basePrice;
     this.#onDataChange(
       UserAction.UPDATE_EVENT,
       isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
       update,
     );
-    // document.body.removeEventListener('keydown', this.#ecsKeydown);
   };
 
-  setSaving() {
+  setSaving = () => {
     if (this.#mode === Mode.EDITING) {
       this.#tripEventFormComponent.updateElement({
         isDisabled: true,
         isSaving: true,
       });
     }
-  }
+  };
 
-  setDeleting() {
+  setDeleting = () => {
     if (this.#mode === Mode.EDITING) {
       this.#tripEventComponent.updateElement({
         isDisabled: true,
         isDeleting: true,
       });
     }
-  }
+  };
 
-  setAborting() {
+  setAborting = () => {
     if (this.#mode === Mode.DEFAULT) {
       this.#tripEventComponent.shake();
       return;
@@ -104,10 +103,10 @@ export class TripEventPresenter {
     };
 
     this.#tripEventFormComponent.shake(resetFormState);
-  }
+  };
 
 
-  init(tripEvent = this.#tripEvent, destinations = this.#destinations, offers = this.#offers) {
+  init = (tripEvent = this.#tripEvent, destinations = this.#destinations, offers = this.#offers) => {
     const prevTripEventComponent = this.#tripEventComponent;
     const prevTripEventFormComponent = this.#tripEventFormComponent;
 
@@ -129,7 +128,6 @@ export class TripEventPresenter {
       destinations: destinations,
       offers: offers,
       onRollupClick: () => {
-        this.#tripEventFormComponent.reset(this.#tripEvent);
         this.#replacePointToForm();
       }
     });
@@ -145,22 +143,23 @@ export class TripEventPresenter {
     }
 
     if (this.#mode === Mode.EDITING) {
-      replace(this.#tripEventFormComponent, prevTripEventFormComponent);
+      replace(this.#tripEventComponent, prevTripEventFormComponent);
       this.#mode = Mode.DEFAULT;
     }
 
     remove(prevTripEventComponent);
     remove(prevTripEventFormComponent);
-  }
+  };
 
-  destroy() {
+  destroy = () => {
     remove(this.#tripEventComponent);
     remove(this.#tripEventFormComponent);
-  }
+  };
 
-  resetView() {
+  resetView = () => {
     if (this.#mode !== Mode.DEFAULT) {
+      this.#tripEventFormComponent.reset(this.#tripEvent, this.#offers);
       this.#replaceFormToEvent();
     }
-  }
+  };
 }
