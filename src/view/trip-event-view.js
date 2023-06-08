@@ -20,16 +20,15 @@ const createTripEventTemplate = (eventPoint, destinations, offers) => {
 
   const destination = destinations.find((d) => d.id === eventPoint.destination);
 
-  const offersArray = offers
-    .find((e) => e.type === type)['offers']
-    .filter((e) => (e.id in offersIDs));
+  const offersObj = offers.find((e) => e.type === type) || {offers: []};
+
   const eventDateTime = convertToEventDateTime(eventPoint.dateFrom);
   const eventDate = convertToEventDate(eventPoint.dateFrom);
   const fromDateTime = convertToDateTime(eventPoint.dateFrom);
   const fromTime = convertToTime(eventPoint.dateFrom);
   const toDateTime = convertToDateTime(eventPoint.dateTo);
   const toTime = convertToTime(eventPoint.dateTo);
-  const offersTemplate = createOffersTemplate(offersArray);
+  const offersTemplate = createOffersTemplate(offersObj.offers.filter((e) => offersIDs.includes(e.id)));
 
   return `<li class="trip-events__item">
     <div class="event">
@@ -75,14 +74,14 @@ class TripEventView extends AbstractView {
     this.element.querySelector('.event__rollup-btn',).addEventListener('click', this.#rollupHandler);
   }
 
+  get template() {
+    return createTripEventTemplate(this.#tripEvent, this.#destinations, this.#offers);
+  }
+
   #rollupHandler = (event) => {
     event.preventDefault();
     this._callback.onRollupClick();
   };
-
-  get template() {
-    return createTripEventTemplate(this.#tripEvent, this.#destinations, this.#offers);
-  }
 }
 
 

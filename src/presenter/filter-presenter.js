@@ -1,6 +1,6 @@
 import {FilterType, UpdateType} from '../utils/const';
 import FilterView from '../view/filter-view';
-import {render} from '../render';
+import {render} from '../framework/render';
 import {remove, replace} from '../framework/render';
 import {filters} from '../utils/filters';
 
@@ -20,7 +20,10 @@ export default class FilterPresenter {
   }
 
   get filters() {
-    return [FilterType.EVERYTHING, FilterType.FUTURE].map((type) => ({ type, count: filters[type](this.#tripEventsModel.tripEvents).length}));
+    return [FilterType.EVERYTHING, FilterType.FUTURE].map((type) => ({
+      type,
+      count: filters[type](this.#tripEventsModel.tripEvents).length
+    }));
   }
 
   init() {

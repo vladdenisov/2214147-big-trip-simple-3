@@ -1,6 +1,6 @@
 import TripEventFormView from '../view/trip-event-form-view';
 import {remove, RenderPosition} from '../framework/render';
-import {render} from '../render';
+import {render} from '../framework/render';
 import {UpdateType, UserAction} from '../utils/const';
 
 export default class CreateTripEventPresenter {
@@ -24,7 +24,9 @@ export default class CreateTripEventPresenter {
       destinations,
       offers,
       onSave: this.#onSubmit,
-      onDelete: this.#onDeleteClick
+      onDelete: this.#onDeleteClick,
+      onReset: this.#onDeleteClick,
+      isEditForm: false
     });
 
     render(this.#tripEventsFormComponent, this.#tripEventsListContainer,
