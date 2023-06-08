@@ -4,6 +4,7 @@ const createNoTripEventsTemplate = (text) => `<p class="trip-events__msg">${text
 
 export default class NoPointsView extends AbstractView {
   #text;
+
   constructor(text = 'Click New Event to create your first point') {
     super();
     this.#text = text;

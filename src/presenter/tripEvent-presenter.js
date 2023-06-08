@@ -61,15 +61,6 @@ export class TripEventPresenter {
     this.#mode = Mode.DEFAULT;
   };
 
-  #handleSave = (update) => {
-    const isMinorUpdate = compareDates(this.#tripEvent.dateFrom, update.dateFrom) !== 0 || this.#tripEvent.basePrice !== update.basePrice;
-    this.#onDataChange(
-      UserAction.UPDATE_EVENT,
-      isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
-      update,
-    );
-  };
-
   setSaving = () => {
     if (this.#mode === Mode.EDITING) {
       this.#tripEventFormComponent.updateElement({
@@ -161,5 +152,14 @@ export class TripEventPresenter {
       this.#tripEventFormComponent.reset(this.#tripEvent, this.#offers);
       this.#replaceFormToEvent();
     }
+  };
+
+  #handleSave = (update) => {
+    const isMinorUpdate = compareDates(this.#tripEvent.dateFrom, update.dateFrom) !== 0 || this.#tripEvent.basePrice !== update.basePrice;
+    this.#onDataChange(
+      UserAction.UPDATE_EVENT,
+      isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
+      update,
+    );
   };
 }

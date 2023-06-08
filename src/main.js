@@ -1,5 +1,5 @@
 import TripPresenter from './presenter/trip-presenter.js';
-import { render } from './framework/render.js';
+import {render} from './framework/render.js';
 import TripEventModel from './model/trip-event-model';
 import {TripEventApiService} from './api/trip-event-api-service';
 import OfferModel from './model/offer-model';
@@ -35,10 +35,12 @@ const tripPresenter = new TripPresenter(
 
 const filterPresenter = new FilterPresenter({filterContainer, filterModel, tripEventModel});
 
-const createTripEventButton = new CreateTripEventButton({onClick: () => {
-  tripPresenter.createEvent();
-  createTripEventButton.element.disabled = true;
-}});
+const createTripEventButton = new CreateTripEventButton({
+  onClick: () => {
+    tripPresenter.createEvent();
+    createTripEventButton.element.disabled = true;
+  }
+});
 
 function onCreateTripEventDestroy() {
   createTripEventButton.element.disabled = false;

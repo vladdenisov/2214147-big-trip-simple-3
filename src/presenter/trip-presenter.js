@@ -125,7 +125,8 @@ export default class TripPresenter {
     for (let i = 0; i < this.#tripEvents.length; i++) {
       try {
         this.#renderTripPoint(tripEventsList[i]);
-      } catch (e) { /* empty */ }
+      } catch (e) { /* empty */
+      }
     }
   };
 
@@ -246,8 +247,9 @@ export default class TripPresenter {
   };
 
   #handleModeChange = () => {
-    if (this.#createTripEventPresenter)
-    {this.#handleCreateEventFormClose();}
+    if (this.#createTripEventPresenter) {
+      this.#handleCreateEventFormClose();
+    }
     this.#tripEventPresenter.forEach((presenter) => presenter.resetView());
   };
 }
