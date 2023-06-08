@@ -72,7 +72,7 @@ export class TripEventPresenter {
 
   setDeleting = () => {
     if (this.#mode === Mode.EDITING) {
-      this.#tripEventComponent.updateElement({
+      this.#tripEventFormComponent.updateElement({
         isDisabled: true,
         isDeleting: true,
       });
@@ -81,7 +81,7 @@ export class TripEventPresenter {
 
   setAborting = () => {
     if (this.#mode === Mode.DEFAULT) {
-      this.#tripEventComponent.shake();
+      this.#tripEventFormComponent.shake();
       return;
     }
 
@@ -107,10 +107,12 @@ export class TripEventPresenter {
       offers: offers,
       onSave: (update) => {
         this.#handleSave(update);
-        this.#replaceFormToEvent();
       },
       onReset: () => {
         this.#replaceFormToEvent();
+      },
+      onDelete: (update) => {
+        this.#handleDeleteClick(update);
       }
     });
 
@@ -159,6 +161,14 @@ export class TripEventPresenter {
     this.#onDataChange(
       UserAction.UPDATE_EVENT,
       isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
+      update,
+    );
+  };
+
+  #handleDeleteClick = (update) => {
+    this.#onDataChange(
+      UserAction.DELETE_EVENT,
+      UpdateType.MINOR,
       update,
     );
   };

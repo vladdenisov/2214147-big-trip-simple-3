@@ -36,7 +36,7 @@ export default class TripPresenter {
 
   #noEventsView;
 
-  #sortComponent = new TripEventsSortingView({sorts});
+  #sortComponent = new TripEventsSortingView({sorts, current: DEFAULT_SORT_TYPE});
   #uiBlocker = new UiBlocker({
     lowerLimit: TimeLimit.LOWER_LIMIT,
     upperLimit: TimeLimit.UPPER_LIMIT
@@ -115,6 +115,7 @@ export default class TripPresenter {
   };
 
   #renderSortingView = () => {
+    this.#sortComponent.changeCurrentType(this.#currentSortType);
     render(this.#sortComponent, this.#tripContainer, RenderPosition.AFTERBEGIN);
     this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
   };
@@ -171,6 +172,7 @@ export default class TripPresenter {
     if (resetSortType) {
       this.#currentSortType = DEFAULT_SORT_TYPE;
     }
+    remove(this.#sortComponent);
   };
 
   init() {
