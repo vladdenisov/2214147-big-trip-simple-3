@@ -17,7 +17,7 @@ export const compareTime = (a, b) => {
   const aDate = dayjs(a);
   const bDate = dayjs(b);
 
-  if (aDate.hour() > bDate.hour()) {
+  if (aDate.hour() - bDate.hour() !== 0) {
     return aDate.hour() - bDate.hour();
   }
 
