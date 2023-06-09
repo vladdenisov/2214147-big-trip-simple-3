@@ -1,5 +1,6 @@
 import AbstractView from '../framework/view/abstract-view';
 import {makeLowercased} from '../utils/strings';
+import {DisabledSorts} from '../utils/const';
 
 const createTripSortingBlock = (sortName, current) => (
   `
@@ -10,6 +11,7 @@ const createTripSortingBlock = (sortName, current) => (
         type="radio" name="trip-sort"
         value="sort-${makeLowercased(sortName)}"
         ${sortName === current ? 'checked' : ''}
+        ${DisabledSorts.includes(sortName) ? 'disabled' : ''}
       >
       <label class="trip-sort__btn" for="sort-${makeLowercased(sortName)}" data-sort-type="${sortName}">${sortName}</label>
     </div>`
@@ -42,7 +44,7 @@ class TripEventsSortingView extends AbstractView {
   };
 
   #sortTypeChangeHandler = (evt) => {
-    if (evt.target.tagName !== 'LABEL') {
+    if (evt.target.tagName !== 'LABEL' || DisabledSorts.includes(evt.target.dataset.sortType)) {
       return;
     }
 

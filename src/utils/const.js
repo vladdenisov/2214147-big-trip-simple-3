@@ -6,6 +6,8 @@ export const SortType = {
   OFFERS: 'offers'
 };
 
+export const DisabledSorts = [SortType.EVENT, SortType.OFFERS];
+
 export const FilterType = {
   EVERYTHING: 'everything',
   FUTURE: 'future'
