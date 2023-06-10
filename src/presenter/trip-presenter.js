@@ -68,7 +68,6 @@ export default class TripPresenter {
     this.#tripEvents = [...tripEventModel.tripEvents];
 
     this.#tripEventModel.addObserver(this.#handleModelEvent);
-    this.#destinationModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
