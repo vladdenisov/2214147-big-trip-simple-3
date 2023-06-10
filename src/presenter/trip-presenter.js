@@ -7,7 +7,7 @@ import {FilterType, SortType, UpdateType, UserAction} from '../utils/const';
 import UiBlocker from '../framework/ui-blocker/ui-blocker';
 import {filters} from '../utils/filters';
 import {sorts} from '../utils/sorts';
-import CreateTripEventPresenter from './createTripEvent-presenter';
+import CreateTripEventPresenter from './create-trip-event-presenter';
 import PreloaderView from '../view/preloader-view';
 
 const TimeLimit = {
